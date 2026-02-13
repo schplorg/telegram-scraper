@@ -211,7 +211,7 @@ class OptimizedTelegramScraper:
 
     async def scrape_channel(self, channel: str, offset_id: int):
         try:
-            entity = await self.client.get_entity(PeerChannel(int(channel)) if channel.startswith('-') else channel)
+            entity = await self.client.get_entity(-int(channel))
             result = await self.client.get_messages(entity, offset_id=offset_id, reverse=True, limit=0)
             total_messages = result.total
 
@@ -349,7 +349,7 @@ class OptimizedTelegramScraper:
 
         try:
             if channel.lstrip('-').isdigit():
-                entity = await self.client.get_entity(PeerChannel(int(channel)))
+                entity = await self.client.get_entity(-int(channel))
             else:
                 entity = await self.client.get_entity(channel)
             semaphore = asyncio.Semaphore(self.max_concurrent_downloads)
@@ -424,7 +424,7 @@ class OptimizedTelegramScraper:
 
         try:
             if channel.lstrip('-').isdigit():
-                entity = await self.client.get_entity(PeerChannel(int(channel)))
+                entity = await self.client.get_entity(-int(channel))
             else:
                 entity = await self.client.get_entity(channel)
             semaphore = asyncio.Semaphore(self.max_concurrent_downloads)
